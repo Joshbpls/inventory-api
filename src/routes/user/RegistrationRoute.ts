@@ -3,11 +3,16 @@ import User from "../../model/User";
 import crypt from 'crypto'
 import express from 'express'
 import asyncHandler from 'express-async-handler'
+import BaseRoute from "../BaseRoute";
 
-export default class RegistrationRoute {
+export default class RegistrationRoute extends BaseRoute {
+
+    constructor(path: string) {
+        super(path)
+    }
 
     configure(app: express.Application) {
-        app.post("/register", asyncHandler(this.handle))
+        app.post(this.path, asyncHandler(this.handle))
     }
 
     async handle(req: any, res: any) {

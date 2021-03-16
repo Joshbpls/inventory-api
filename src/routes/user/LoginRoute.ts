@@ -3,13 +3,19 @@ import asyncHandler from "express-async-handler";
 import crypt from 'crypto'
 import User from '../../model/User'
 import express from 'express'
+import BaseRoute from "../BaseRoute";
+
 const WRONG_CREDENTIALS = {success: false, message: "Wrong email and password combination"}
 const DOES_NOT_EXIST = {success: false, message: "User with that email does not exist"}
 
-export default class LoginRoute {
+export default class LoginRoute extends BaseRoute {
+
+    constructor(path: string) {
+        super(path)
+    }
 
     configure(app: express.Application) {
-        app.post('/login', asyncHandler(this.handle))
+        app.post(this.path, asyncHandler(this.handle))
     }
 
     async handle(req: any, res: any) {

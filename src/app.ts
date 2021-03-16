@@ -1,14 +1,17 @@
 import dotenv from 'dotenv'
 import express from 'express'
 import mongoose from 'mongoose'
-import RegistrationRoute from "./routes/user/register";
-import LoginRoute from "./routes/user/login";
+import RegistrationRoute from "./routes/user/RegistrationRoute";
+import LoginRoute from "./routes/user/LoginRoute";
 import bodyParser from "body-parser";
 import debug from "debug";
+import BaseRoute from "./routes/BaseRoute";
 
 dotenv.config()
 
 const app = express()
+const port = 5000;
+const routes: Array<BaseRoute> = [];
 
 const connectionOptions = {
     useNewUrlParser: true,
@@ -22,9 +25,14 @@ mongoose.connect(process.env.MONGO_CONNECTION as string, connectionOptions)
 
 const initialize = () => {
     app.use(bodyParser.json());
-    new RegistrationRoute().configure(app)
-    new LoginRoute().configure(app)
-    app.listen(5000, () => console.log("Listening on port 5000"))
+    initializeRoutes()
+    app.listen(port, () => debug(`Listening on port: ${port}`))
+}
+
+const initializeRoutes = () => {
+    routes.push(new RegistrationRoute("/register"))
+    routes.push(new LoginRoute("/login"))
+    routes.forEach(route => route.configure(app))
 }
 
 
