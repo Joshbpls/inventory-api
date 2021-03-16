@@ -4,7 +4,6 @@ import mongoose from 'mongoose'
 import RegistrationRoute from "./routes/user/RegistrationRoute";
 import LoginRoute from "./routes/user/LoginRoute";
 import bodyParser from "body-parser";
-import debug from "debug";
 import BaseRoute from "./routes/BaseRoute";
 
 dotenv.config()
@@ -16,6 +15,10 @@ const routes: Array<BaseRoute> = [];
 const connectionOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true
+}
+
+const debug = (message: string) => {
+    console.log(message)
 }
 
 mongoose.connect(process.env.MONGO_CONNECTION as string, connectionOptions)
