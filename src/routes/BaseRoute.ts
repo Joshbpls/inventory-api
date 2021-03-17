@@ -1,13 +1,11 @@
 import express from 'express'
 
 export default abstract class BaseRoute {
-
-    protected path: string;
+    protected path: string
 
     protected constructor(path: string) {
-        this.path = path;
+        this.path = path
     }
 
-    abstract configure(app: express.Application): void;
-
+    abstract configure(app: express.Application): void
 }
