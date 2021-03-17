@@ -23,7 +23,7 @@ export default class LoginRoute extends BaseRoute {
         if (!email || !password) {
             return res.json({success: false, message: "Email and password fields are required"})
         }
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email }).exec()
         if (user != null) {
             const salt = user.password_salt;
             const hashed = crypt.scryptSync(password, salt, 64)

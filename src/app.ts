@@ -17,9 +17,7 @@ const connectionOptions = {
     useUnifiedTopology: true
 }
 
-const debug = (message: string) => {
-    console.log(message)
-}
+const debug = (message: string) => console.log(message)
 
 mongoose.connect(process.env.MONGO_CONNECTION as string, connectionOptions)
     .then(() => debug("Connected to MongoDB"))
@@ -27,7 +25,7 @@ mongoose.connect(process.env.MONGO_CONNECTION as string, connectionOptions)
     .catch(error => debug(`Error: ${error}`));
 
 const initialize = () => {
-    app.use(bodyParser.json());
+    app.use(bodyParser.json())
     initializeRoutes()
     app.listen(port, () => debug(`Listening on port: ${port}`))
 }

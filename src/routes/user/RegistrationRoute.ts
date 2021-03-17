@@ -4,6 +4,7 @@ import crypt from 'crypto'
 import express from 'express'
 import asyncHandler from 'express-async-handler'
 import BaseRoute from "../BaseRoute";
+import {createToken} from "../../token/TokenGenerator";
 
 export default class RegistrationRoute extends BaseRoute {
 
@@ -28,7 +29,7 @@ export default class RegistrationRoute extends BaseRoute {
         const hashed = crypt.scryptSync(password, salt, 64)
         const created = new User({ email, password: hashed, password_salt: salt})
         await created.save()
-        const token = jwt.sign({ email }, process.env.SECRET_KEY as Secret)
+        const token = createToken(email)
         res.status(200).json({ success: true, message: "Account creation successful", token})
     }
 }

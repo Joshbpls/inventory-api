@@ -7,7 +7,7 @@ const getToken = (authHeader: string) => {
     return authHeader && authHeader.split(' ')[1]
 }
 
-module.exports = (req: any, res: any, next: any) => {
+export default function authenticate(req: any, res: any, next: any) {
     const { authorization } = req.headers;
     const token = getToken(authorization);
     if(!token) {
