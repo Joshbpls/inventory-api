@@ -1,8 +1,8 @@
 import dotenv from 'dotenv'
 import express from 'express'
 import mongoose from 'mongoose'
-import RegistrationRoute from './routes/user/RegistrationRoute'
-import LoginRoute from './routes/user/LoginRoute'
+import RegistrationRoute from './routes/RegistrationRoute'
+import LoginRoute from './routes/LoginRoute'
 import bodyParser from 'body-parser'
 import BaseRoute from './routes/BaseRoute'
 
