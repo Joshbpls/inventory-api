@@ -25,7 +25,7 @@ export default class LoginRoute extends BaseRoute {
         const user = await User.findOne({ email }).exec()
         if (user != null) {
             const salt = user.password_salt
-            const hashed = crypt.scryptSync(password, salt, 64)
+            const hashed = crypt.scryptSync(password, salt, 64).toString('utf-8')
             if (user.password === hashed) {
                 const token = createToken(user.id, email)
                 return res.status(200).json({ success: true, message: 'Login successful', token: token })

@@ -2,6 +2,8 @@ import BaseRoute from '../BaseRoute'
 import express from 'express'
 import asyncHandler from 'express-async-handler'
 import Organization from '../../model/Organization'
+import authenticate from '../../middleware/auth'
+import User from '../../model/User'
 
 export default class UserRoute extends BaseRoute {
     constructor(path: string) {
@@ -10,13 +12,18 @@ export default class UserRoute extends BaseRoute {
 
     configure(app: express.Application): void {
         const router = express.Router()
+        router.use(authenticate)
         router.get('/organizations', asyncHandler(this.getUserOrganizations))
-        app.use('/user', router)
+        app.use(this.path, router)
     }
 
     async getUserOrganizations(req: any, res: any) {
         const user = req.user
-        const organizations = await Organization.where('members').all(user.id)
+        const userDocument = await User.findOne({ email: user.email })
+        const organizations = await Organization.find().or([
+            { owner: userDocument._id },
+            { members: { $in: [userDocument._id] } },
+        ])
         return res.status(200).json({ organizations })
     }
 }
