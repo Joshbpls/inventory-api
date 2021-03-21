@@ -1,6 +1,11 @@
-import { Schema } from 'mongoose'
+import mongoose, { Document, Schema } from 'mongoose'
 
-const mongoose = require('mongoose')
+export interface UserDocument extends Document {
+    id: string
+    email: string
+    password: string
+    password_salt: string
+}
 
 const schema: Schema = new Schema({
     id: { type: String, required: true, unique: true },
@@ -9,6 +14,6 @@ const schema: Schema = new Schema({
     password_salt: { type: String, required: true },
 })
 
-const UserModel = mongoose.model('User', schema)
+const UserModel = mongoose.model<UserDocument>('User', schema)
 
 export default UserModel

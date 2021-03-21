@@ -20,10 +20,14 @@ export default class UserRoute extends BaseRoute {
     async getUserOrganizations(req: any, res: any) {
         const user = req.user
         const userDocument = await User.findOne({ email: user.email })
-        const organizations = await Organization.find().or([
-            { owner: userDocument._id },
-            { members: { $in: [userDocument._id] } },
-        ])
-        return res.status(200).json({ organizations })
+        if (userDocument) {
+            const organizations = await Organization.find().or([
+                { owner: userDocument._id },
+                { members: { $in: [userDocument._id] } },
+            ])
+            return res.status(200).json({ success: true, message: 'Request successful', organizations })
+        } else {
+            res.json({ success: false, message: 'Unable to find user document' })
+        }
     }
 }
