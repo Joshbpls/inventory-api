@@ -12,7 +12,7 @@ export const schema: Schema = new Schema({
     id: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    members: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
+    members: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }]
 })
 
 const OrganizationModel = mongoose.model<OrganizationDocument>('Organization', schema)

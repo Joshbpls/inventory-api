@@ -44,7 +44,7 @@ Body:
 #### Create Organization
 The create organization request only requires the `name` field to be present in the body. The `owner`, `members`, 
 and `id` fields are generated server side upon creation.\
-Endpoint (POST): `organization/create`\
+Endpoint (POST): `org/create`\
 Body:
 ```json5
 {
@@ -54,7 +54,7 @@ Body:
 
 #### Get Organizations
 Retrieves a list of organizations that the sending user belongs to (owner or member) \
-Endpoint (GET): `/user/organizations`
+Endpoint (GET): `/user/orgs`
 Response:
 ```json5
 {

@@ -30,8 +30,8 @@ export default class LoginRoute extends BaseRoute {
                 const token = createToken(user.id, email)
                 return res.status(200).json({ success: true, message: 'Login successful', token: token })
             }
-            return res.status(403).json(WRONG_CREDENTIALS)
+            return res.status(200).json(WRONG_CREDENTIALS)
         }
-        return res.status(404).json(DOES_NOT_EXIST)
+        return res.status(200).json(DOES_NOT_EXIST)
     }
 }

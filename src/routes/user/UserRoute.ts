@@ -13,7 +13,7 @@ export default class UserRoute extends BaseRoute {
     configure(app: express.Application): void {
         const router = express.Router()
         router.use(authenticate)
-        router.get('/organizations', asyncHandler(this.getUserOrganizations))
+        router.get('/orgs', asyncHandler(this.getUserOrganizations))
         app.use(this.path, router)
     }
 
@@ -21,11 +21,11 @@ export default class UserRoute extends BaseRoute {
         const user = req.user
         const userDocument = await User.findOne({ email: user.email })
         if (userDocument) {
-            const organizations = await Organization.find().or([
+            const orgs = await Organization.find().or([
                 { owner: userDocument._id },
-                { members: { $in: [userDocument._id] } },
+                { members: { $in: [userDocument._id] } }
             ])
-            return res.status(200).json({ success: true, message: 'Request successful', organizations })
+            return res.status(200).json({ success: true, message: 'Request successful', orgs })
         } else {
             res.json({ success: false, message: 'Unable to find user document' })
         }
