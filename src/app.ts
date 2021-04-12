@@ -9,6 +9,7 @@ import BaseRoute from './routes/BaseRoute'
 import OrganizationRoute from './routes/organization/OrganizationRoute'
 import UserRoute from './routes/user/UserRoute'
 import AuthVerifierRoute from './routes/AuthVerifierRoute'
+import ItemRoute from './routes/item/ItemRoute'
 
 dotenv.config()
 
@@ -23,16 +24,14 @@ const connectionOptions = {
 
 const debug = (message: string) => console.log(message)
 
-const origins = ['http://localhost:3000']
-
 mongoose
     .connect(process.env.MONGO_CONNECTION as string, connectionOptions)
     .then(() => debug('Connected to MongoDB'))
     .then(() => initialize())
-    .catch((error) => debug(`Error: ${error}`))
+    .catch(console.error)
 
 const initialize = () => {
-    app.use(cors({ origin: origins }))
+    app.use(cors())
     app.use(bodyParser.json())
     initializeRoutes()
     app.listen(port, () => debug(`Listening on port: ${port}`))
@@ -41,8 +40,9 @@ const initialize = () => {
 const initializeRoutes = () => {
     routes.push(new RegistrationRoute('/register'))
     routes.push(new LoginRoute('/login'))
-    routes.push(new OrganizationRoute('/organization'))
+    routes.push(new OrganizationRoute('/org'))
     routes.push(new UserRoute('/user'))
     routes.push(new AuthVerifierRoute('/refresh'))
+    routes.push(new ItemRoute('/item'))
     routes.forEach((route) => route.configure(app))
 }

@@ -21,10 +21,9 @@ export default class UserRoute extends BaseRoute {
         const user = req.user
         const userDocument = await User.findOne({ email: user.email })
         if (userDocument) {
-            const orgs = await Organization.find().or([
-                { owner: userDocument._id },
-                { members: { $in: [userDocument._id] } }
-            ])
+            const orgs = await Organization.find()
+                .or([{ owner: userDocument._id }, { members: { $in: [userDocument._id] } }])
+                .populate({ path: 'owner', select: 'name' })
             return res.status(200).json({ success: true, message: 'Request successful', orgs })
         } else {
             res.json({ success: false, message: 'Unable to find user document' })

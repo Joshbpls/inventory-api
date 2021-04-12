@@ -13,7 +13,7 @@ const schema: Schema = new Schema({
     id: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     amount: { type: Number, required: true, default: 0 },
-    category: { type: Number, required: false },
+    category: { type: String, required: false, default: 'N/A' },
     organization: { type: Schema.Types.ObjectId, required: true }
 })
 
