@@ -10,6 +10,7 @@ import OrganizationRoute from './routes/organization/OrganizationRoute'
 import UserRoute from './routes/user/UserRoute'
 import AuthVerifierRoute from './routes/AuthVerifierRoute'
 import ItemRoute from './routes/item/ItemRoute'
+import EventLogRoute from './routes/event/EventLogRoute'
 
 dotenv.config()
 
@@ -44,5 +45,6 @@ const initializeRoutes = () => {
     routes.push(new UserRoute('/user'))
     routes.push(new AuthVerifierRoute('/refresh'))
     routes.push(new ItemRoute('/item'))
+    routes.push(new EventLogRoute('/log'))
     routes.forEach((route) => route.configure(app))
 }

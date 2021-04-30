@@ -6,6 +6,8 @@ import Organization from '../../model/Organization'
 import shortid from 'shortid'
 import authenticate from '../../middleware/auth'
 import asyncHandler from 'express-async-handler'
+import InventoryEvent from '../../model/InventoryEvent'
+import User from '../../model/User'
 
 interface ItemProperties {
     name?: string
@@ -15,15 +17,10 @@ interface ItemProperties {
 }
 
 interface ItemUpdatePayload {
+    sender?: string
     name?: string
     amount?: number
     category?: string
-}
-
-const setFieldIfPresent = (document: any, field: string, value?: any) => {
-    if (value) {
-        document[field] = value
-    }
 }
 
 export default class ItemRoute extends BaseRoute {
@@ -45,9 +42,20 @@ export default class ItemRoute extends BaseRoute {
         const item = await Item.findOne({ id }).exec()
         if (item) {
             await item.updateOne(payload)
-            res.json({ success: true, message: 'Update successful' })
+            const user = await User.findOne({ id: req.user.id }).exec()
+            if (user) {
+                const action = `Updated ${item.name}`
+                const event = new InventoryEvent({
+                    user: user._id,
+                    organization: item.organization,
+                    action,
+                    timestamp: Date.now()
+                })
+                await event.save()
+                return res.json({ success: true, message: 'Update successful' })
+            }
         } else {
-            res.json({ success: false, message: 'Item with that ID not found' })
+            return res.json({ success: false, message: 'Update not successful' })
         }
     }
 
@@ -66,10 +74,10 @@ export default class ItemRoute extends BaseRoute {
                     organization: organization._id
                 })
                 await item.save()
-                res.json({ success: true, message: 'Item creation successful' })
+                return res.json({ success: true, message: 'Item creation successful' })
             }
         } else {
-            res.json({ success: false, message: 'Required fields are missing' })
+            return res.json({ success: false, message: 'Required fields are missing' })
         }
     }
 }

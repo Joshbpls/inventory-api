@@ -42,12 +42,12 @@ export default class OrganizationRoute extends BaseRoute {
                 const owner = userDocument._id
                 const organization = new Organization({ id, name, owner })
                 await organization.save()
-                res.json({ success: true, message: 'Successfully created new organization' })
+                return res.json({ success: true, message: 'Successfully created new organization' })
             } else {
-                res.json({ success: false, message: 'Unable to find your user document' })
+                return res.json({ success: false, message: 'Unable to find your user document' })
             }
         } else {
-            res.json({ success: false, message: 'Organization must include a name' })
+            return res.json({ success: false, message: 'Organization must include a name' })
         }
     }
 
@@ -59,7 +59,7 @@ export default class OrganizationRoute extends BaseRoute {
             const events = await InventoryEvent.find({ organization: organization._id }).exec()
             return res.status(200).json({ success: true, message: 'Request successful', organization, items, events })
         } else {
-            res.status(404).json({ success: false, message: 'No organization found with that id' })
+            return res.status(404).json({ success: false, message: 'No organization found with that id' })
         }
     }
 
