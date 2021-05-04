@@ -14,7 +14,8 @@ const schema: Schema = new Schema({
     name: { type: String, required: true },
     amount: { type: Number, required: true, default: 0 },
     category: { type: String, required: false, default: 'N/A' },
-    organization: { type: Schema.Types.ObjectId, required: true }
+    organization: { type: Schema.Types.ObjectId, required: true },
+    location: { type: String, required: false, default: 'Not configured' }
 })
 
 const ItemModel = mongoose.model<ItemDocument>('Item', schema)
